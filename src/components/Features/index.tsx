@@ -23,7 +23,7 @@ const Features: FunctionComponent<FeaturesProps> = (args) => {
         image={craftImage}
         reverse={true}
         text={
-          "Изучите езльеварение, трансмутацию и шаманизм для создания предметов против монстров"
+          "Изучите зельеварение, трансмутацию и шаманизм для создания предметов против монстров"
         }
       />
       <Feature
