@@ -14,7 +14,7 @@ const Feature: FunctionComponent<FeatureProps> = (args) => {
   return (
     <div
       data-aos={`fade-${args.reverse ? 'left' : 'right'}`}
-      data-aos-duration='1300'
+      data-aos-duration='1500'
       // data-aos-offset='300'
       data-aos-anchor-placement='center-bottom'
       data-aos-once='true'

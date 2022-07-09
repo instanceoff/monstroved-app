@@ -5,12 +5,12 @@ import trailer_placeholder from './trailer_placeholder.png';
 
 const Description: React.FC = () => {
   return (
-    <div className='flex flex-col max-w-5xl h-screen bg-cover bg-center mx-auto'>
+    <div className='flex flex-col max-w-screen-xl h-screen mx-auto'>
       <img
         data-aos='zoom-in'
-        data-aos-duration='3000'
+        data-aos-duration='2500'
         data-aos-once='true'
-        className='mx-auto max-w-2xl mt-28 mb-28 floating'
+        className='mx-auto mt-28 mb-14 floating'
         src={logo}
         alt=''
       />
@@ -18,16 +18,18 @@ const Description: React.FC = () => {
       <div className='flex flex-row align-middle justify-center'>
         <img
           data-aos='fade-right'
-          data-aos-duration='1300'
+          data-aos-duration='1500'
           data-aos-once='true'
-          className='max-h-64'
+          data-aos-delay='800'
+          className=''
           src={trailer_placeholder}
           alt=''
         />
         <p
           data-aos='fade-left'
-          data-aos-duration='1300'
+          data-aos-duration='1500'
           data-aos-once='true'
+          data-aos-delay='800'
           className='text-white text-2xl h-fit my-auto mx-10 font-semibold'
         >
           Монстровед это игра - симулятор в средневековом сеттинге. Вы играете

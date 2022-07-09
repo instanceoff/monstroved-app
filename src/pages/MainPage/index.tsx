@@ -8,12 +8,12 @@ function MainPage() {
   // AOS.init();
   return (
     <div className=' bg-bgGray overflow-x-hidden'>
-      <div className='mx-auto max-w-6xl bg-top bg-mainBack bg-no-repeat bg-contain bg-clip-border'>
+      <div className='mx-auto max-h-screen bg-top bg-mainBack bg-no-repeat bg-contain bg-clip-border'>
         <Description />
-        <Divider />
-        <Features />
-        <Divider />
       </div>
+      <Divider />
+      <Features />
+      <Divider />
     </div>
   );
 }
