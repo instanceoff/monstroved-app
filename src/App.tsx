@@ -5,6 +5,7 @@ import './App.css';
 import Description from './components/Description';
 import MainPage from './pages/MainPage';
 import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const App: React.FC = () => {
   AOS.init();

@@ -5,7 +5,7 @@ import trailer_placeholder from './trailer_placeholder.png';
 
 const Description: React.FC = () => {
   return (
-    <div className='flex flex-col max-w-5xl bg-cover bg-center mx-auto'>
+    <div className='flex flex-col max-w-5xl h-screen bg-cover bg-center mx-auto'>
       <img
         data-aos='zoom-in'
         data-aos-duration='3000'
