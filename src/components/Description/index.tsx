@@ -7,14 +7,29 @@ const Description: React.FC = () => {
   return (
     <div className='flex flex-col max-w-5xl bg-cover bg-center mx-auto'>
       <img
+        data-aos='zoom-in'
+        data-aos-duration='3000'
+        data-aos-once='true'
         className='mx-auto max-w-2xl mt-28 mb-28 floating'
         src={logo}
         alt=''
       />
       {/* <video src={animlogo} autoPlay loop /> */}
       <div className='flex flex-row align-middle justify-center'>
-        <img className='max-h-64' src={trailer_placeholder} alt='' />
-        <p className='text-white text-2xl h-fit my-auto mx-10 font-semibold'>
+        <img
+          data-aos='fade-right'
+          data-aos-duration='1300'
+          data-aos-once='true'
+          className='max-h-64'
+          src={trailer_placeholder}
+          alt=''
+        />
+        <p
+          data-aos='fade-left'
+          data-aos-duration='1300'
+          data-aos-once='true'
+          className='text-white text-2xl h-fit my-auto mx-10 font-semibold'
+        >
           Монстровед это игра - симулятор в средневековом сеттинге. Вы играете
           за молодого монстроведа, который помогает отважным рыцарям и обычным
           жителям справляться с разнообразными опасными чудищами
