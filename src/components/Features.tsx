@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FunctionComponent } from 'react';
-import lavkaImage from './image 1.png';
-import visitorsImage from './image 1-2.png';
-import craftImage from './image 1-1.png';
-import craftHeader from './craft.png';
-import visitorsHeader from './visitors.png';
-import lavkaHeader from './lavka.png';
-import Feature from '../Feature';
+import lavkaImage from '../assets/image 1.png';
+import visitorsImage from '../assets/image 1-2.png';
+import craftImage from '../assets/image 1-1.png';
+import craftHeader from '../assets/craft.png';
+import visitorsHeader from '../assets/visitors.png';
+import lavkaHeader from '../assets/lavka.png';
+import Feature from './Feature';
 
 interface FeaturesProps {}
 

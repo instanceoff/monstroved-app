@@ -8,7 +8,7 @@ module.exports = {
         bgGray: '#181818',
       },
       backgroundImage: {
-        mainBack: "url('./components/Description/background2.png')",
+        mainBack: "url('./assets/background2.png')",
       },
     },
   },
