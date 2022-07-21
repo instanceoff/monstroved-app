@@ -1,16 +1,15 @@
-import React from 'react';
 import Description from '../../components/Description';
 import Divider from '../../components/Divider';
 import Features from '../../components/Features';
-import AOS from 'aos';
+import Button from '../../components/UI/Button';
 
 function MainPage() {
-  // AOS.init();
   return (
-    <div className=' bg-bgGray overflow-x-hidden'>
+    <div className=' bg-main-gray overflow-x-hidden'>
       <div className='mx-auto max-h-screen bg-top bg-mainBack bg-no-repeat bg-contain bg-clip-border'>
         <Description />
       </div>
+      <Button title={'Кнопочка'} onClick={(e) => console.log(e)} />
       <Divider />
       <Features />
       <Divider />

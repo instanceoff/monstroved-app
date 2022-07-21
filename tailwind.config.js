@@ -5,9 +5,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bgGray: '#181818',
+        main: {
+          gray: '#181818',
+          orange: '#DA6701',
+        },
       },
       backgroundImage: {
+        orangeToYellow: 'linear-gradient(0deg, #F3E777 -80%, #DA6701 100%)',
         mainBack: "url('./assets/background2.png')",
       },
     },

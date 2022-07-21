@@ -10,7 +10,7 @@ import Feature from './Feature';
 
 interface FeaturesProps {}
 
-const Features: FunctionComponent<FeaturesProps> = (args) => {
+const Features: FunctionComponent<FeaturesProps> = (props) => {
   return (
     <>
       <Feature
