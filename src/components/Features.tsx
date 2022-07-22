@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FunctionComponent } from 'react';
 import lavkaImage from '../assets/image 1.png';
 import visitorsImage from '../assets/image 1-2.png';
