@@ -1,16 +1,22 @@
 import * as React from 'react';
-import { FunctionComponent, ReactNode } from 'react';
+import { FunctionComponent } from 'react';
+import { IArticle } from '../../types/article';
 
 interface ArticleBLockProps {
-  title: string;
-  description: string;
-  image: string;
+  article: IArticle;
 }
 
-const ArticleBLock: FunctionComponent<ArticleBLockProps> = (props) => {
+const ArticleBLock: FunctionComponent<ArticleBLockProps> = ({ article }) => {
   return (
     <>
-      <div className={`flex flex-col flex-wrap justify-between m-4`}></div>
+      <div
+        className={`justify-between text-white rounded-xl mx-auto w-5/12 bg-main-orange px-10 py-6`}
+      >
+        <span className='w-fit h-fit my-auto'>
+          <p className='text-3xl'>{article.title}</p>
+          <p className='truncate'>{article.description}</p>
+        </span>
+      </div>
     </>
   );
 };

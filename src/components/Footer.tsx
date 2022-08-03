@@ -6,7 +6,7 @@ interface FooterProps {}
 const Footer: FunctionComponent<FooterProps> = () => {
   return (
     <>
-      <div className='min-w-full '>
+      <div className='min-w-full h-fit mt-auto'>
         <div className='mx-auto w-1/2 flex justify-around'>
           <Button
             title={'STEAM'}
