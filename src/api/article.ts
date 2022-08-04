@@ -4,6 +4,7 @@ import {
   DocumentData,
   getDocs,
   query,
+  QueryDocumentSnapshot,
   QuerySnapshot,
   updateDoc,
 } from 'firebase/firestore';
@@ -38,12 +39,13 @@ export const getArticles = async (col: ECollections) => {
   const q = query(collection(firestore, col));
   const snap = await getDocs(q);
 
-  return await articleConverter(snap);
+  return await articlesConverter(snap);
 };
 
-const articleConverter = async (snap: QuerySnapshot<DocumentData>) => {
+export const articlesConverter = async (snap: QuerySnapshot<DocumentData>) => {
   let result: IArticle[] = [];
   snap.docs.forEach(async (doc, i) => {
+    const dat = doc as unknown as IArticle;
     result.push({
       title: doc.get('title'),
       description: doc.get('description'),
@@ -54,10 +56,19 @@ const articleConverter = async (snap: QuerySnapshot<DocumentData>) => {
   return result;
 };
 
-export const getArticleImageURL = async (imagePath: string) => {
-  let imageUrl = '';
-  getDownloadURL(ref(storage, imagePath)).then(
-    (downloadUrl) => (imageUrl = downloadUrl)
-  );
-  return imageUrl;
+export const articleConverter = (snap: QueryDocumentSnapshot<DocumentData>) => {
+  return {
+    title: snap.get('title'),
+    description: snap.get('description'),
+    imagePath: snap.get('imagePath'),
+    imageURL: snap.get('imageURL'),
+  } as IArticle;
 };
+
+// export const getArticleImageURL = async (imagePath: string) => {
+//   let imageUrl = '';
+//   getDownloadURL(ref(storage, imagePath)).then(
+//     (downloadUrl) => (imageUrl = downloadUrl)
+//   );
+//   return imageUrl;
+// };
