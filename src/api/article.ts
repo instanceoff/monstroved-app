@@ -62,9 +62,7 @@ export const addArticle = async (article: IArticleInput, bgImage: FileList) => {
 
 // export const getArticles = async (col: ECollections) => {
 //   const q = query(collection(firestore, col));
-//   const snap = await getDoc(q);
-
-//   return await articlesConverter(snap);
+//   return await getDocs(q);
 // };
 
 // export const articleConverter = (snap: QueryDocumentSnapshot<DocumentData>) => {

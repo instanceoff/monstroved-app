@@ -20,7 +20,9 @@ const ArticleList: FunctionComponent<ArticleListProps> = (props) => {
 
   return (
     <>
-      <div className={`flex flex-col justify-between m-4`}>
+      <div
+        className={`flex flex-col mx-auto w-fit max-w-full p-4 justify-between m-4 border-main-orange border-4 rounded-xl`}
+      >
         {articles?.docs.map((article, i) => {
           return <ArticleBLock key={'article' + i} article={article.data()} />;
         })}
