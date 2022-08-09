@@ -1,36 +1,33 @@
 import { FunctionComponent, useState } from 'react';
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
-import { addBlock, blocksConverter, ECollections } from '../../api/article';
-import Description from '../../components/Description';
-import Divider from '../../components/Divider';
-import Features from '../../components/Features';
-import Footer from '../../components/Footer';
-import Button from '../../components/UI/Button';
+import {
+  useCollection,
+  useDocument,
+  useDocumentData,
+} from 'react-firebase-hooks/firestore';
+import {
+  addBlock,
+  articlesConverter,
+  blocksConverter,
+  ECollections,
+} from '../../api/article';
 import { firestore } from '../../api/firebaseCofig';
 import { collection, orderBy, query, doc } from 'firebase/firestore';
 import { EBlockType } from '../../types/article';
 import Block from '../../components/Article/Block';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import ArticleHeader from '../../components/Article/Header';
 
 interface ArticleProps {}
 
 const Article: FunctionComponent<ArticleProps> = (props) => {
-  // const URL = window.location.href.substring(
-  //   window.location.href.lastIndexOf('/') + 1
-  // );
-  // tests
   const [textContent, setTextContent] = useState('');
   const [imgContent, setImgContent] = useState<FileList>();
-  // const [position, setPosition] = useState('');
   const [type, setType] = useState<EBlockType>(EBlockType.text);
   const { id } = useParams();
-  // const [path, setPath] = useState('');
-  //tests end
 
-  const [article, aLoading, aError] = useDocument(
-    doc(firestore, ECollections.articles, id!)
+  const [article, aLoading, aError] = useDocumentData(
+    doc(firestore, ECollections.articles, id!).withConverter(articlesConverter)
   );
-
   const [blocks, loading, error] = useCollection(
     query(
       collection(firestore, ECollections.articles, id!, 'blocks').withConverter(
@@ -41,7 +38,9 @@ const Article: FunctionComponent<ArticleProps> = (props) => {
   );
   return (
     <>
+      {!aLoading && <ArticleHeader article={article!} />}
       <div className='w-3/5 mx-auto'>
+        <h2 className='text-4xl'>{article?.title}</h2>
         <div>
           {blocks?.docs.map((blockSnap, i) => {
             return <Block block={blockSnap.data()} />;
