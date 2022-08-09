@@ -20,7 +20,7 @@ const Article: FunctionComponent<ArticleProps> = () => {
   const [textContent, setTextContent] = useState('');
   const [imgContent, setImgContent] = useState<FileList>();
   const [position, setPosition] = useState('');
-  const [type, setType] = useState(EBlockType.text);
+  const [type, setType] = useState<EBlockType>(EBlockType.text);
   const [path, setPath] = useState('');
   //tests end
 
@@ -39,14 +39,27 @@ const Article: FunctionComponent<ArticleProps> = () => {
       <div>
         {blocks?.docs.map((blockSnap, i) => {
           const block = blockSnap.data();
-          return (
-            <div>
-              <p className='text-black'>{block.position}</p>
-              <p>{block.content}</p>
-              <p>{block.type}</p>
-              <p>{block.path}</p>
-            </div>
-          );
+          if (block.type === EBlockType.text) {
+            return (
+              <div>
+                <p className='text-black'>{block.position}</p>
+                <p>{block.content}</p>
+                <p>{block.type}</p>
+                <p>{block.path}</p>
+              </div>
+            );
+          }
+          if (block.type === EBlockType.image) {
+            return (
+              <div>
+                <p className='text-black'>{block.position}</p>
+                <img src={block.URL} alt='' />
+                <p>{block.type}</p>
+                <p>{block.path}</p>
+              </div>
+            );
+          }
+          return <p>ТУТА НИЧЕГО НЕТ</p>;
         })}
         <div>
           {type === EBlockType.text && (
@@ -76,7 +89,7 @@ const Article: FunctionComponent<ArticleProps> = () => {
 
           <select
             name='select'
-            onChange={(e) => setType(e.target.value as EBlockType.text)}
+            onChange={(e) => setType(e.target.value as EBlockType)}
           >
             <option value={EBlockType.text} selected>
               Текст
@@ -95,7 +108,7 @@ const Article: FunctionComponent<ArticleProps> = () => {
                 {
                   position: blocks!.docs.length + 1,
                   content: textContent,
-                  type: EBlockType.text,
+                  type: type,
                 },
                 URL,
                 imgContent

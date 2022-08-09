@@ -12,7 +12,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { IArticle, IArticleInput, IBlock } from '../types/article';
+import { EBlockType, IArticle, IArticleInput, IBlock } from '../types/article';
 import { firestore, storage } from './firebaseCofig';
 
 export enum ECollections {
@@ -38,31 +38,6 @@ export const articlesConverter = {
       imagePath: data?.imagePath,
       imageURL: data?.imageURL,
     } as IArticle;
-  },
-};
-
-export const blocksConverter = {
-  toFirestore: (block: IBlock) => {
-    return {
-      position: block.position,
-      type: block.type,
-      content: block.content,
-      path: block.path,
-      URL: block.URL,
-    };
-  },
-  fromFirestore: (
-    snapshot: QueryDocumentSnapshot<IBlock>,
-    options: SnapshotOptions
-  ) => {
-    const data = snapshot.data(options);
-    return {
-      position: data?.position,
-      type: data?.type,
-      content: data?.content,
-      path: data?.path,
-      URL: data?.URL,
-    } as IBlock;
   },
 };
 
@@ -98,6 +73,31 @@ export const addArticle = async (article: IArticleInput, bgImage: FileList) => {
   }
 };
 
+export const blocksConverter = {
+  toFirestore: (block: IBlock) => {
+    return {
+      position: block.position,
+      type: block.type,
+      content: block.content,
+      path: block.path,
+      URL: block.URL,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot<IBlock>,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return {
+      position: data?.position,
+      type: data?.type,
+      content: data?.content,
+      path: data?.path,
+      URL: data?.URL,
+    } as IBlock;
+  },
+};
+
 export const addBlock = async (
   block: IBlock,
   parentArticle: string,
@@ -107,6 +107,9 @@ export const addBlock = async (
   // await uploadBytes(fileRef, image[0]);
   // const imageURL = await getDownloadURL(fileRef);
 
+  const URL = block.URL ? block.URL : '';
+  const path = block.path ? block.path : '';
+
   const newDocRef = await addDoc(
     collection(
       firestore,
@@ -114,15 +117,17 @@ export const addBlock = async (
       parentArticle,
       'blocks'
     ).withConverter(blocksConverter),
-    { ...block }
+    { ...block, URL, path }
   );
 
-  if (image && image.length > 0) {
-    const imageObj = await uploadImage(image!, `articles`);
-    await updateDoc(newDocRef, {
-      URL: imageObj.fileURL,
-      path: imageObj.fileRef.fullPath,
-    });
+  if (block.type === EBlockType.image) {
+    if (image && image.length > 0) {
+      const imageObj = await uploadImage(image!, `articles`);
+      await updateDoc(newDocRef, {
+        URL: imageObj.fileURL,
+        path: imageObj.fileRef.fullPath,
+      });
+    }
   }
 };
 

@@ -32,7 +32,7 @@ export enum EBlockType {
 export interface IBlock {
   position: number;
   type: EBlockType;
-  content: string | string[];
-  path?: string | string[];
-  URL?: string | string[];
+  content: string;
+  path?: string;
+  URL?: string;
 }
