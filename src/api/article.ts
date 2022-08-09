@@ -12,13 +12,14 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { IArticle, IArticleInput } from '../types/article';
+import { IArticle, IArticleInput, IBlock } from '../types/article';
 import { firestore, storage } from './firebaseCofig';
 
 export enum ECollections {
   articles = 'articles',
 }
 
+//Converters
 export const articlesConverter = {
   toFirestore: (article: IArticle) => {
     return {
@@ -40,22 +41,87 @@ export const articlesConverter = {
   },
 };
 
+export const blocksConverter = {
+  toFirestore: (block: IBlock) => {
+    return {
+      position: block.position,
+      type: block.type,
+      content: block.content,
+      path: block.path,
+      URL: block.URL,
+    };
+  },
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot<IBlock>,
+    options: SnapshotOptions
+  ) => {
+    const data = snapshot.data(options);
+    return {
+      position: data?.position,
+      type: data?.type,
+      content: data?.content,
+      path: data?.path,
+      URL: data?.URL,
+    } as IBlock;
+  },
+};
+
+const uploadImage = async (image: FileList, path: string) => {
+  const fileRef = ref(storage, `${path}/${image[0].name}`);
+  await uploadBytes(fileRef, image[0]);
+  return { fileRef, fileURL: await getDownloadURL(fileRef) };
+};
+
 export const addArticle = async (article: IArticleInput, bgImage: FileList) => {
-  const fileRef = ref(storage, `articles/${bgImage[0].name}`);
-  await uploadBytes(fileRef, bgImage[0]);
-  const imageURL = await getDownloadURL(fileRef);
+  // const fileRef = ref(storage, `articles/${bgImage[0].name}`);
+  // await uploadBytes(fileRef, bgImage[0]);
+  // const imageURL = await getDownloadURL(fileRef);
+
+  const imageObj = await uploadImage(bgImage, `articles`);
 
   const newDocRef = await addDoc(
     collection(firestore, ECollections.articles).withConverter(
       articlesConverter
     ),
-    { ...article, imageURL: imageURL, imagePath: fileRef.fullPath }
+    {
+      ...article,
+      imageURL: imageObj.fileURL,
+      imagePath: imageObj.fileRef.fullPath,
+    }
   );
 
   if (bgImage && bgImage.length > 0) {
     await updateDoc(newDocRef, {
-      imageURL: imageURL,
-      imagePath: fileRef.fullPath,
+      imageURL: imageObj.fileURL,
+      imagePath: imageObj.fileRef.fullPath,
+    });
+  }
+};
+
+export const addBlock = async (
+  block: IBlock,
+  parentArticle: string,
+  image?: FileList
+) => {
+  // const fileRef = ref(storage, `articles/${parentArticle}`);
+  // await uploadBytes(fileRef, image[0]);
+  // const imageURL = await getDownloadURL(fileRef);
+
+  const newDocRef = await addDoc(
+    collection(
+      firestore,
+      ECollections.articles,
+      parentArticle,
+      'blocks'
+    ).withConverter(blocksConverter),
+    { ...block }
+  );
+
+  if (image && image.length > 0) {
+    const imageObj = await uploadImage(image!, `articles`);
+    await updateDoc(newDocRef, {
+      URL: imageObj.fileURL,
+      path: imageObj.fileRef.fullPath,
     });
   }
 };
