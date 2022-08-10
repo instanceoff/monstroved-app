@@ -6,6 +6,7 @@ import ArticleBLock from './ArticleBlock';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { firestore } from '../../api/firebaseCofig';
 import { query, collection } from '@firebase/firestore';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 interface ArticleListProps {}
 
@@ -21,11 +22,15 @@ const ArticleList: FunctionComponent<ArticleListProps> = (props) => {
   return (
     <>
       <div
-        className={`flex flex-col mx-auto w-fit max-w-full p-4 justify-between m-4 border-main-orange border-4 rounded-xl`}
+        className={`flex flex-col mx-auto w-fit max-w-full min-w-[50%] px-4 py-2 justify-between m-4 border-main-gray100 bg-main-gray100 border-4 rounded-xl`}
       >
-        {articles?.docs.map((article, i) => {
-          return <ArticleBLock key={'article' + i} article={article.data()} />;
-        })}
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          articles?.docs.map((article, i) => {
+            return <ArticleBLock key={'article' + i} article={article} />;
+          })
+        )}
       </div>
     </>
   );

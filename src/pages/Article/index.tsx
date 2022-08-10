@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import {
   useCollection,
   useDocument,
@@ -36,6 +36,49 @@ const Article: FunctionComponent<ArticleProps> = (props) => {
       orderBy('position')
     )
   );
+
+  const clickHandler = () => {
+    const adderBlock = () =>
+      addBlock(
+        {
+          position: blocks!.docs.length + 1,
+          content: textContent,
+          type: type,
+        },
+        id!,
+        imgContent
+      );
+
+    switch (type) {
+      case EBlockType.image:
+        if (imgContent) {
+          let img = new Image();
+          img.src = window.URL.createObjectURL(imgContent![0]);
+          img.onload = function () {
+            if (img.naturalWidth < 1080 || img.naturalHeight < 300) {
+              alert(
+                'Изображение имеет слишком низкое разрешение. Минимальное разрешение: 300x1080. Ваше: ' +
+                  img.naturalWidth +
+                  'x' +
+                  img.naturalHeight
+              );
+            } else {
+              adderBlock();
+            }
+          };
+        } else {
+          alert('Изображение не загружено. Выберите изображение.');
+        }
+        break;
+      case EBlockType.text:
+        adderBlock();
+        break;
+    }
+
+    if (type === EBlockType.image) {
+    }
+  };
+
   return (
     <>
       {!aLoading && <ArticleHeader article={article!} />}
@@ -43,11 +86,12 @@ const Article: FunctionComponent<ArticleProps> = (props) => {
         <h2 className='text-4xl'>{article?.title}</h2>
         <div>
           {blocks?.docs.map((blockSnap, i) => {
-            return <Block block={blockSnap.data()} />;
+            return <Block key={i} block={blockSnap.data()} />;
           })}
           <div>
             {type === EBlockType.text && (
               <input
+                className='text-black'
                 type='text'
                 placeholder='Контент'
                 onChange={(e) => setTextContent(e.target.value)}
@@ -61,6 +105,7 @@ const Article: FunctionComponent<ArticleProps> = (props) => {
               />
             )}
             <select
+              className='text-black'
               name='select'
               onChange={(e) => setType(e.target.value as EBlockType)}
             >
@@ -69,20 +114,7 @@ const Article: FunctionComponent<ArticleProps> = (props) => {
               </option>
               <option value={EBlockType.image}>Картинка</option>
             </select>
-            <button
-              className='text-red'
-              onClick={() =>
-                addBlock(
-                  {
-                    position: blocks!.docs.length + 1,
-                    content: textContent,
-                    type: type,
-                  },
-                  id!,
-                  imgContent
-                )
-              }
-            >
+            <button className='text-red' onClick={() => clickHandler()}>
               ОТПРАВИТЬ
             </button>
           </div>
